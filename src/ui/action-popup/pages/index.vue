@@ -141,45 +141,83 @@ const onSubmit = function(value: any) {
     <div class="hero">
       <div class="hero-content text-center">
         <div class="max-w-md">
-          <UButton icon="ph:sneaker" size="xl" @click="test" :loading="loadProductLoading">
+          <UButton
+            icon="ph:sneaker"
+            size="xl"
+            :loading="loadProductLoading"
+            @click="test"
+          >
             Load product info
           </UButton>
         </div>
         <div class="hero-content text-center">
           <div class="max-w-md">
-            <UButton icon="ph:sneaker" size="xl" @click="preloadStore" >
+            <UButton
+              icon="ph:sneaker"
+              size="xl"
+              @click="preloadStore"
+            >
               XXX
             </UButton>
           </div>
         </div>
       </div>
 
-      <div class="w-full" v-if="product.id !== null">
-        <UForm class="space-y-4" @submit="onSubmit">
-          <UFormField label="ID" name="id" class="text-center">
-            <UBadge color="primary" variant="solid">
+      <div
+        v-if="product.id !== null"
+        class="w-full"
+      >
+        <UForm
+          class="space-y-4"
+          @submit="onSubmit"
+        >
+          <UFormField
+            label="ID"
+            name="id"
+            class="text-center"
+          >
+            <UBadge
+              color="primary"
+              variant="solid"
+            >
               {{ product.id }}
             </UBadge>
           </UFormField>
 
-          <UFormField label="Title" name="title">
-            <UInput v-model="product.title" size="xl" class="w-full" />
+          <UFormField
+            label="Title"
+            name="title"
+          >
+            <UInput
+              v-model="product.title"
+              size="xl"
+              class="w-full"
+            />
           </UFormField>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="image-gallery">
               <div class="thumbnail-list flex flex-wrap gap-2">
-                <div v-for="image in product.images" :key="image" class="cursor-pointer" @click="selectImage(image)">
+                <div
+                  v-for="image in product.images"
+                  :key="image"
+                  class="cursor-pointer"
+                  @click="selectImage(image)"
+                >
                   <img
                     :src="image"
                     alt="Product thumbnail"
                     class="w-16 h-16 object-cover rounded-md border-2 transition-all"
-                    :class="selectedImage === image ? 'border-primary-500 dark:border-primary-400 scale-105': 'border-transparent hover:border-gray-300 dark:hover:border-gray-600'" />
+                    :class="selectedImage === image ? 'border-primary-500 dark:border-primary-400 scale-105': 'border-transparent hover:border-gray-300 dark:hover:border-gray-600'"
+                  />
                 </div>
               </div>
             </div>
           </div>
-          <UFormField label="Description" name="password">
+          <UFormField
+            label="Description"
+            name="password"
+          >
             <UTextarea
               v-model="product.desc"
               size="xl"
@@ -195,20 +233,38 @@ const onSubmit = function(value: any) {
             >
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Colors:</label>
               <div class="flex flex-wrap gap-2">
-                <UBadge v-for="value in option.values" :key="value.name" color="white" variant="solid" size="lg">
-                  <span v-if="option.is_color" class="w-3 h-3 rounded-full mr-2"
-                        :style="{ backgroundColor: value.color }"></span>
-                  <UInput v-model="value.name" placeholder="Ví dụ: Red, Blue" />
+                <UBadge
+                  v-for="value in option.values"
+                  :key="value.name"
+                  color="white"
+                  variant="solid"
+                  size="lg"
+                >
+                  <span
+                    v-if="option.is_color"
+                    class="w-3 h-3 rounded-full mr-2"
+                    :style="{ backgroundColor: value.color }"
+                  ></span>
+                  <UInput
+                    v-model="value.name"
+                    placeholder="Ví dụ: Red, Blue"
+                  />
                 </UBadge>
               </div>
             </div>
           </div>
 
-          <UFormField label="Store" name="store">
-            <USelect v-model="product.store"
-                     value-key="id"
-                     label-key="name"
-                     :items="wooStore.stores" class="w-full" />
+          <UFormField
+            label="Store"
+            name="store"
+          >
+            <USelect
+              v-model="product.store"
+              value-key="id"
+              label-key="name"
+              :items="wooStore.stores"
+              class="w-full"
+            />
           </UFormField>
           <div class="hero-content text-center">
             <div class="max-w-md">
@@ -224,7 +280,10 @@ const onSubmit = function(value: any) {
           </div>
         </UForm>
       </div>
-      <div class="w-full" v-else>
+      <div
+        v-else
+        class="w-full"
+      >
         <p>Click button to load product info</p>
       </div>
     </div>

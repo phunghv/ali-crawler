@@ -9,14 +9,9 @@ const props = defineProps<{
 
 <template>
   <div
-    data-slot="table-container"
-    class="relative w-full overflow-auto"
+    data-slot="card-footer"
+    :class="cn('flex items-center px-6 [.border-t]:pt-6', props.class)"
   >
-    <table
-      data-slot="table"
-      :class="cn('w-full caption-bottom text-sm', props.class)"
-    >
-      <slot />
-    </table>
+    <slot />
   </div>
 </template>

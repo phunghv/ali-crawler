@@ -36,7 +36,7 @@ const loadData = function() {
         </UButton>
       </div>
 
-       <div class="flex gap-2 justify-center">
+      <div class="flex gap-2 justify-center">
         <UButton
           icon="ph:plus"
           @click="loadData"

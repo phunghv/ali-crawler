@@ -16,7 +16,7 @@ export const useWooStoreStore = defineStore("wooStore", () => {
     stores,
     currentStore,
     setStores,
-    loadS                                                                                                                                                                               tore,
+    loadStore,
     setCurrentStore,
   }
 })
