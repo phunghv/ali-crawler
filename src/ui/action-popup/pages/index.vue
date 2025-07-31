@@ -89,12 +89,14 @@ const convertOption = function(options: Array<object>) {
   })
 }
 const convertProduct = function(data: object) {
+  console.log(data)
   return {
     id: data.GLOBAL_DATA.globalData.productId,
     title: data.PRODUCT_TITLE.text,
     desc: data.DESC.pcDescUrl,
     mainImage: data.GLOBAL_DATA.globalData.image,
     images: data.HEADER_IMAGE_PC.imagePathList,
+    properties: data.PRODUCT_PROP_PC,
     skuInfo: {
       skuImagesMap: data.HEADER_IMAGE_PC.skuImagesMap,
       skuProperties: data.SKU.skuProperties,
