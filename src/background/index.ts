@@ -39,7 +39,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(formData)
         })
 
         if (!response.ok) {
@@ -47,8 +47,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
 
         const data = await response.json()
+        console.log("Success", data)
         // Gửi phản hồi thành công về cho popup
-        sendResponse({ success: true, data: data })
+        sendResponse({ success: true, data: data?.message })
       } catch (error) {
         // Gửi phản hồi lỗi về cho popup
         sendResponse({ success: false, error: error.message })

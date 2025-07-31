@@ -3,7 +3,9 @@ import { useWooStoreStore } from "@/stores/wooStore.store"
 import { onMounted } from "vue-demi"
 
 const wooStore = useWooStoreStore()
-const message = ref(null)
+const toast = useToast()
+const allStores = ref(wooStore.stores)
+
 const product = ref({
   title: null,
   id: null,
@@ -11,23 +13,27 @@ const product = ref({
   options: [],
   colorOptions: [],
   mainImage: null,
-  store: null,
+  // store: wooStore.currentStore,
 })
 onMounted(() => {
   preloadStore()
 })
 
 const preloadStore = () => {
-  loadProductLoading.value = true
-  chrome.runtime.sendMessage(
-    {
-      action: "loadStore",
-    },
-    (response) => {
-      loadProductLoading.value = false
-      console.log(response)
-    },
-  )
+  console.log("preload store", wooStore.stores.length)
+  if (allStores.value?.length == 0) {
+    loadProductLoading.value = true
+    chrome.runtime.sendMessage(
+      {
+        action: "loadStore",
+      },
+      (response) => {
+        loadProductLoading.value = false
+        wooStore.stores = response.data
+        allStores.value = response.data
+      },
+    )
+  }
 }
 const isLoading = ref(false)
 const loadProductLoading = ref(false)
@@ -107,8 +113,14 @@ const test = function() {
         activeTab.id,
         { action: "getInfo" },
         (response: object) => {
-          product.value = convertProduct(response.data)
           loadProductLoading.value = false
+          if (response == null || response.data == null) {
+            toast.add({
+              title:'❌Không thể load thông tin sản phẩm'
+            })
+          } else {
+            product.value = convertProduct(response.data)
+          }
         },
       )
     }
@@ -116,21 +128,30 @@ const test = function() {
 }
 
 const onSubmit = function(value: any) {
+  if (wooStore.currentStore == null || wooStore.currentStore == 0) {
+    toast.add({
+      title: "❌Cần chọn store trước khi import",
+      progress: false,
+    })
+    return
+  }
   isLoading.value = true
+  // wooStore.currentStore = product.value.store
   chrome.runtime.sendMessage(
     {
       action: "submitData",
-      formData: product.value,
+      formData: {
+        product: product.value,
+        store: wooStore.currentStore,
+      },
     },
     (response) => {
       isLoading.value = false
-      if (response && response.success) {
-        message.value = "Gửi dữ liệu thành công! ✅"
-        console.log("Server response:", response.data)
-      } else {
-        message.value = `Lỗi: ${response ? response.error : "Không nhận được phản hồi."}`
-        console.error("Submission failed:", response)
-      }
+      console.log("Server response:", response.data)
+      toast.add({
+        title: "✅ " + (response.data || "Gửi dữ liệu thành công!"),
+        progress: false,
+      })
     },
   )
 }
@@ -149,17 +170,6 @@ const onSubmit = function(value: any) {
           >
             Load product info
           </UButton>
-        </div>
-        <div class="hero-content text-center">
-          <div class="max-w-md">
-            <UButton
-              icon="ph:sneaker"
-              size="xl"
-              @click="preloadStore"
-            >
-              XXX
-            </UButton>
-          </div>
         </div>
       </div>
 
@@ -259,10 +269,10 @@ const onSubmit = function(value: any) {
             name="store"
           >
             <USelect
-              v-model="product.store"
+              v-model="wooStore.currentStore"
               value-key="id"
               label-key="name"
-              :items="wooStore.stores"
+              :items="allStores"
               class="w-full"
             />
           </UFormField>

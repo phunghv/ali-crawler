@@ -1,22 +1,21 @@
 export const useWooStoreStore = defineStore("wooStore", () => {
-  const { data: stores } = useBrowserLocalStorage("wooStores", [])
-  const { data: currentStore } = useBrowserLocalStorage("currentWooStore", null)
+  const { data: wooStores } = useBrowserLocalStorage("wooStores", [])
+  const { data: currentWooStore } = useBrowserLocalStorage("currentWooStore", 0)
+  const stores = computed({
+    get: () => wooStores.value,
+    set: (value) => {
+      wooStores.value = value
+    },
+  })
 
-  const loadStore = () => {
-    console.info("Load wooo")
-  }
-  const setCurrentStore = (current: object) => {
-    currentStore.value = current
-  }
-  const setStores = (data: Array<object>) => {
-    stores.value = data
-  }
-
+  const currentStore = computed({
+    get: () => currentWooStore.value,
+    set: (value) => {
+      currentWooStore.value = value
+    },
+  })
   return {
     stores,
     currentStore,
-    setStores,
-    loadStore,
-    setCurrentStore,
   }
 })
