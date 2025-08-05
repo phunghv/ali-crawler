@@ -10,7 +10,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       try {
         console.info("Start fetch store https://product.1stshirtcorp.com")
         const response = await fetch("https://product.1stshirtcorp.com/stores", {
-          method: "GET"
+          method: "GET",
+          headers: {
+            'X-API-KEY': process.env.API_KEY,
+          }
         })
 
         if (!response.ok) {
@@ -38,6 +41,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            'X-API-KEY': process.env.API_KEY,
           },
           body: JSON.stringify(formData)
         })

@@ -102,8 +102,10 @@ const convertProduct = function(data: object) {
       skuProperties: data.SKU.skuProperties,
       skuPaths: data.SKU.skuPaths,
     },
+    shipping: data.SHIPPING,
     options: convertOption(data.SKU.skuProperties),
     colorOptions: convertColorOption(data.SKU.skuProperties),
+    price: data.PRICE
   }
 }
 const test = function() {
@@ -138,6 +140,7 @@ const onSubmit = function(value: any) {
     return
   }
   isLoading.value = true
+  product.value.category = wooStore.category
   // wooStore.currentStore = product.value.store
   chrome.runtime.sendMessage(
     {
@@ -275,6 +278,14 @@ const onSubmit = function(value: any) {
               value-key="id"
               label-key="name"
               :items="allStores"
+              class="w-full"
+            />
+          </UFormField>
+          <UFormField
+            label="Category"
+            name="category"
+          >
+            <UInput v-model="wooStore.category"
               class="w-full"
             />
           </UFormField>
